@@ -29,7 +29,17 @@ const createLegPost = async (day: number) => {
   });
   await redis.set(K.post(post.id), String(day));
   await redis.set(K.posted(day), post.id);
+  await approveLeg(post.id);
   return post;
+};
+
+// Reddit's spam filter can remove app posts in new subreddits. The app is a moderator, so it approves its own leg.
+const approveLeg = async (postId: string) => {
+  try {
+    await reddit.approve(postId as `t3_${string}`);
+  } catch (error) {
+    console.error('Approve failed', postId, error);
+  }
 };
 
 const postUrl = (postId: string) => `https://reddit.com/r/${context.subredditName}/comments/${postId.replace(/^t3_/, '')}`;
@@ -145,6 +155,7 @@ const ensureTodayPost = async (c: Context, trigger: string) => {
   try {
     const existing = await redis.get(K.posted(day));
     const id = existing ?? (await createLegPost(day)).id;
+    if (existing) await approveLeg(existing);
     console.log(`Today's leg ${day} (${existing ? 'existing' : 'created'} on ${trigger}): ${postUrl(id)}`);
     return c.json<TriggerResponse>({ status: 'success', message: `Post ${id} ready` });
   } catch (error) {
