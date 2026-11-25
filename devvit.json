@@ -1,12 +1,15 @@
 {
   "$schema": "https://developers.reddit.com/schema/config-file.v1.json",
-  "name": "skein-daily",
+  "name": "skein-flow",
   "permissions": {
     "redis": true,
     "reddit": {
       "enable": true,
       "scope": "user",
-      "asUser": ["SUBMIT_COMMENT", "SUBSCRIBE_TO_SUBREDDIT"]
+      "asUser": [
+        "SUBMIT_COMMENT",
+        "SUBSCRIBE_TO_SUBREDDIT"
+      ]
     }
   },
   "post": {
@@ -52,6 +55,6 @@
     "build": "vite build"
   },
   "dev": {
-    "subreddit": "skein_daily_dev"
+    "subreddit": "skein_flow_dev"
   }
 }

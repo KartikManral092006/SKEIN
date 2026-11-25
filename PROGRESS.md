@@ -50,8 +50,17 @@ exist (Phantom Abyss, racing ghosts). No game found where async ghosts physicall
 Glide only: dark at ~92%. Flap only ~77 s. Solo smart ~75 s. Ride the wild V + sprint ~66 s (par 70).
 Late in a busy day, drafting 30 flyers: ~60 s.
 
+## Deployed
+- App renamed to `skein-flow` (`skein-daily` was not used). Uploaded as v0.0.1, installed in r/skein_flow_dev.
+- `devvit logs skein_flow_dev --since 2d` (checked 2026-11-25): no errors. The server logs only failures.
+- Do not run `devvit publish` before judging. Upload is enough (app stays private, sub < 200 members).
+
+## Hackathon submission (deadline reportedly 2026-12-08 18:00 PST; verify on Devpost rules page)
+- Devpost form: app listing link (developers.reddit.com), public demo post link, description. Video < 1 min and repo optional.
+- Draft text: `docs/devpost-submission.md`. Tester script: `docs/playtest-guide.md`.
+
 ## Not done yet
-- Never uploaded. Needs `npx devvit login`, dev sub `r/skein_daily_dev`, app name `skein-daily` (may be taken).
+- Confirm r/skein_flow_dev is public and has a game post judges can open.
 - Untested inside Reddit: flair, comment as user, subscribe (`asUser` flags in devvit.json), scheduler post.
 - Real-phone playtest: touch feel, frame rate, sound on device.
 - Seed the demo sub with real flights over several days before judging so judges see named ghosts.
