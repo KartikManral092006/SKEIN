@@ -1,4 +1,5 @@
 import { Hono } from 'hono';
+import type { Context } from 'hono';
 import { serve } from '@hono/node-server';
 import { context, createServer, getServerPort, reddit, redis } from '@devvit/web/server';
 import type { TriggerResponse, UiResponse } from '@devvit/web/shared';
@@ -138,16 +139,21 @@ app.post('/internal/scheduler/daily-post', async (c) => {
   }
 });
 
-app.post('/internal/triggers/on-app-install', async (c) => {
+// Install and upgrade both make sure today's leg exists and log its link, so a redeploy shows the current post URL.
+const ensureTodayPost = async (c: Context, trigger: string) => {
   const day = dayFor(Date.now());
   try {
     const existing = await redis.get(K.posted(day));
-    const post = existing ? { id: existing } : await createLegPost(day);
-    return c.json<TriggerResponse>({ status: 'success', message: `Post ${post.id} created` });
+    const id = existing ?? (await createLegPost(day)).id;
+    console.log(`Today's leg ${day} (${existing ? 'existing' : 'created'} on ${trigger}): ${postUrl(id)}`);
+    return c.json<TriggerResponse>({ status: 'success', message: `Post ${id} ready` });
   } catch (error) {
-    console.error('Install post failed', error);
+    console.error(`${trigger} post failed`, error);
     return c.json<TriggerResponse>({ status: 'error', message: 'Failed to create post' }, 400);
   }
-});
+};
+
+app.post('/internal/triggers/on-app-install', (c) => ensureTodayPost(c, 'install'));
+app.post('/internal/triggers/on-app-upgrade', (c) => ensureTodayPost(c, 'upgrade'));
 
 serve({ fetch: app.fetch, createServer, port: getServerPort() });

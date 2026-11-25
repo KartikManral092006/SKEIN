@@ -10,7 +10,8 @@ Ride the wake of everyone who flew before you.
 
 ## Links
 - App listing: [https://developers.reddit.com/apps/skein-flow]  (confirm the exact URL while logged in)
-- Demo post: [link to today's post in r/skein_flow_dev]
+- Demo post: https://reddit.com/r/skein_flow_dev/comments/1y50mrp  (Leg 1. Swap for the newest leg before submitting.
+  Run `npx devvit install skein_flow_dev` after an upload, then `npx devvit logs skein_flow_dev --since 15m` to print it.)
 - Video (optional, under 1 min): [link]
 - Repo (optional): https://github.com/KartikManral092006/SKEIN
 
